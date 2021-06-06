@@ -13,6 +13,8 @@ const io = require('socket.io')(http, {
   },
 });
 
+const viewsRoute = require('./routes/viewsRoute');
+
 // const clients = {};
 
 io.on('connection', (socket) => {
@@ -45,10 +47,13 @@ io.on('connection', (socket) => {
   //   });
 });
 
-// app.use(express.json());
+app.use(express.json());
+app.use(express.static(`${__dirname}/views/`));
 app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 app.set('views', './views');
+
+app.use(viewsRoute);
 
 const PORT = 3000;
 
