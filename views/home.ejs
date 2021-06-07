@@ -38,10 +38,9 @@
           MessageList
           <% messages.forEach(element =>{%>
           <p data-testid="message">
-            <%= `${element.timestamp} - ${element.nickname}: ${element.message}`
-            %>
+            <%=`${element.timestamp} - ${element.nickname}: ${element.message}`%>
           </p>
-          <%}); %>
+          <%});%>
         </div>
       </section>
 
