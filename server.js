@@ -14,6 +14,7 @@ const io = require('socket.io')(http, {
 });
 
 const viewsRoute = require('./routes/viewsRoute');
+const messagesRoute = require('./routes/messagesRoute');
 
 // const clients = {};
 
@@ -54,6 +55,7 @@ app.set('view engine', 'ejs');
 app.set('views', './views');
 
 app.use(viewsRoute);
+app.use(messagesRoute);
 
 const PORT = 3000;
 

@@ -1,5 +1,25 @@
 const client = window.io();
 
+const fetchMessages = async (messageParam, nicknameParam) => {
+  console.log(messageParam, nicknameParam);
+  const endpoint = 'http://localhost:3000/message';
+  const request = {
+    method: 'POST',
+    headers: {
+      'Content-type': 'application/json',
+    },
+    body: JSON.stringify({
+      message: messageParam,
+      nickname: nicknameParam,
+    }),
+  };
+
+  const response = await fetch(endpoint, request);
+  const responseJson = await response.json();
+
+  return responseJson;
+};
+
 const randomNickName = () => {
   const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.toLowerCase().split('');
   let nickname = '';
@@ -83,6 +103,8 @@ document.querySelector('.send-button').addEventListener('click', () => {
   client.emit('message', { chatMessage, nickname });
 
   document.querySelector('.input-message').value = '';
+
+  fetchMessages(chatMessage, nickname);
 });
 
 client.on('message', (message) => {
