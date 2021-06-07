@@ -1,24 +1,23 @@
 const client = window.io();
 
-const fetchMessages = async (messageParam, nicknameParam) => {
-  console.log(messageParam, nicknameParam);
-  const endpoint = 'http://localhost:3000/message';
-  const request = {
-    method: 'POST',
-    headers: {
-      'Content-type': 'application/json',
-    },
-    body: JSON.stringify({
-      message: messageParam,
-      nickname: nicknameParam,
-    }),
-  };
+// const fetchMessages = async (messageParam, nicknameParam) => {
+//   const endpoint = 'http://localhost:3000/message';
+//   const request = {
+//     method: 'POST',
+//     headers: {
+//       'Content-type': 'application/json',
+//     },
+//     body: JSON.stringify({
+//       message: messageParam,
+//       nickname: nicknameParam,
+//     }),
+//   };
 
-  const response = await fetch(endpoint, request);
-  const responseJson = await response.json();
+//   const response = await fetch(endpoint, request);
+//   const responseJson = await response.json();
 
-  return responseJson;
-};
+//   return responseJson;
+// };
 
 const randomNickName = () => {
   const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.toLowerCase().split('');
@@ -104,7 +103,7 @@ document.querySelector('.send-button').addEventListener('click', async () => {
 
   document.querySelector('.input-message').value = '';
 
-  await fetchMessages(chatMessage, nickname);
+  // await fetchMessages(chatMessage, nickname);
 });
 
 client.on('message', (message) => {

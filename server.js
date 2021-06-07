@@ -15,6 +15,7 @@ const io = require('socket.io')(http, {
 
 const viewsRoute = require('./routes/viewsRoute');
 const messagesRoute = require('./routes/messagesRoute');
+const messagesModel = require('./models/messagesModel');
 
 // const clients = {};
 
@@ -26,6 +27,7 @@ io.on('connection', (socket) => {
       .toLocaleString({}, { hour12: true })
       .replace(/\//g, '-');
     const message = `${date} - ${nickname}: ${chatMessage}`;
+    messagesModel.createMessage(chatMessage, nickname, date);
 
     io.emit('message', message);
   });
