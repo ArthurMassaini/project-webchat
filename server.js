@@ -3,8 +3,6 @@ const express = require('express');
 
 const app = express();
 const http = require('http').createServer(app);
-// const randomAvatar = require('random-avatar');
-// const random = require('random-name')
 
 const io = require('socket.io')(http, {
   cors: {
@@ -17,10 +15,38 @@ const viewsRoute = require('./routes/viewsRoute');
 const messagesRoute = require('./routes/messagesRoute');
 const messagesModel = require('./models/messagesModel');
 
-// const clients = {};
+let clients = [];
+
+const firstConnetions = (socket) => {
+  socket.on('newConnection', (nickname) => {
+    const newUser = { nickname, id: socket.id };
+
+    socket.broadcast.emit('newUser', newUser);
+    clients = [...clients, newUser];
+    // socket.emit('newUser', { userNickname: nickname });
+  });
+
+  socket.on('newNickname', (nickname) => {
+    socket.broadcast.emit('newNickname', { nickname, id: socket.id });
+    const index = clients.findIndex((client) => client.id === socket.id);
+    clients[index].nickname = nickname;
+  });
+
+  socket.on('disconnect', () => {
+    const index = clients.findIndex((user) => user.id === socket.id);
+    clients.splice(index, 1);
+    socket.broadcast.emit('disconnected', socket.id);
+
+    console.log('usuario desconectado');
+  });
+};
 
 io.on('connection', (socket) => {
   console.log(`novo usuário conectado! ${socket.id}`);
+
+  firstConnetions(socket);
+
+  socket.emit('users', clients);
 
   socket.on('message', ({ chatMessage, nickname }) => {
     const date = new Date()
@@ -31,23 +57,6 @@ io.on('connection', (socket) => {
 
     io.emit('message', message);
   });
-
-  //   socket.emit('confirmConnection', newUser);
-
-  //   socket.broadcast.emit('newUserConnect', newUser);
-
-  //   socket.on('sendMessageServer', (message) => {
-  //     const from = clients[socket.id];
-  //     io.emit('sendMessageToClients', { from, message });
-  //   });
-
-  //   socket.on('disconnect', () => {
-  //     const clientDisconnected = clients[socket.id];
-  //     delete clients[socket.id];
-  //     console.log(`cliente ${clientDisconnected.name} saiu do chat`);
-
-  //     io.emit('clientExit', clientDisconnected);
-  //   });
 });
 
 app.use(express.json());
