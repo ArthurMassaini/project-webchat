@@ -23,7 +23,6 @@ const firstConnetions = (socket) => {
 
     socket.broadcast.emit('newUser', newUser);
     clients = [...clients, newUser];
-    // socket.emit('newUser', { userNickname: nickname });
   });
 
   socket.on('newNickname', (nickname) => {

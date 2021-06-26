@@ -4,9 +4,9 @@ const randomNickName = () => {
   const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.toLowerCase().split('');
   let nickname = '';
   for (let i = 0; i < 16; i += 1) {
-    const RandomNumber = Math.floor(Math.random() * 26);
+    const randomIndex = Math.floor(Math.random() * 26);
 
-    nickname += alphabet[RandomNumber];
+    nickname += alphabet[randomIndex];
   }
 
   return nickname;
